@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Custom Messenger</title>
+  <style>
+    body { font-family: Arial; background: #eee; padding: 20px; }
+    #chat { height: 300px; overflow-y: scroll; background: white; border: 1px solid #ccc; padding: 10px; }
+    .msg { margin: 5px 0; }
+    #controls { margin-top: 10px; }
+    .bot { color: blue; }
+    .user { color: green; }
+  </style>
+</head>
+<body>
+
+<h2>📩 My Messenger</h2>
+
+<div id="chat"></div>
+
+<div id="controls">
+  <input id="input" type="text" placeholder="Type a message..." />
+  <button onclick="send()">Send</button>
+  <button onclick="clearChat()">Clear</button>
+</div>
+
+<script>
+  const chat = document.getElementById("chat");
+  const input = document.getElementById("input");
+
+  function loadMessages() {
+    const stored = localStorage.getItem("chat");
+    if (stored) chat.innerHTML = stored;
+  }
+
+  function saveMessages() {
+    localStorage.setItem("chat", chat.innerHTML);
+  }
+
+  function send() {
+    const msg = input.value.trim();
+    if (!msg) return;
+    const div = document.createElement("div");
+    div.className = "msg user";
+    div.textContent = "You: " + msg;
+    chat.appendChild(div);
+    input.value = "";
+    autoReply(msg);
+    saveMessages();
+    scrollDown();
+  }
+
+  function autoReply(msg) {
+    setTimeout(() => {
+      const reply = document.createElement("div");
+      reply.className = "msg bot";
+      reply.textContent = "Bot: I saw you said '" + msg + "'";
+      chat.appendChild(reply);
+      saveMessages();
+      scrollDown();
+    }, 1000);
+  }
+
+  function clearChat() {
+    chat.innerHTML = "";
+    saveMessages();
+  }
+
+  function scrollDown() {
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  // Auto-update UI every 2 seconds
+  setInterval(() => {
+    loadMessages();
+    scrollDown();
+  }, 2000);
+
+  // Load on start
+  loadMessages();
+</script>
+
+</body>
+</html>
