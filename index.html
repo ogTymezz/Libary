@@ -1,83 +1,122 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Custom Messenger</title>
   <style>
-    body { font-family: Arial; background: #eee; padding: 20px; }
-    #chat { height: 300px; overflow-y: scroll; background: white; border: 1px solid #ccc; padding: 10px; }
-    .msg { margin: 5px 0; }
-    #controls { margin-top: 10px; }
-    .bot { color: blue; }
-    .user { color: green; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 20px;
+      margin: 0;
+    }
+    h2 {
+      text-align: center;
+    }
+    #chat {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      height: 300px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    .msg {
+      margin: 5px 0;
+      padding: 5px 8px;
+      border-radius: 5px;
+    }
+    .user {
+      background: #d1ffd1;
+      color: #003300;
+    }
+    .bot {
+      background: #d0e7ff;
+      color: #002244;
+    }
+    #controls {
+      display: flex;
+      gap: 10px;
+    }
+    #input {
+      flex-grow: 1;
+      padding: 5px;
+      font-size: 16px;
+    }
+    button {
+      padding: 5px 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-<h2>📩 My Messenger</h2>
+  <h2>📩 Custom Messenger</h2>
 
-<div id="chat"></div>
+  <div id="chat"></div>
 
-<div id="controls">
-  <input id="input" type="text" placeholder="Type a message..." />
-  <button onclick="send()">Send</button>
-  <button onclick="clearChat()">Clear</button>
-</div>
+  <div id="controls">
+    <input id="input" type="text" placeholder="Type your message here..." />
+    <button onclick="send()">Send</button>
+    <button onclick="clearChat()">Clear</button>
+  </div>
 
-<script>
-  const chat = document.getElementById("chat");
-  const input = document.getElementById("input");
+  <script>
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("input");
 
-  function loadMessages() {
-    const stored = localStorage.getItem("chat");
-    if (stored) chat.innerHTML = stored;
-  }
+    function loadMessages() {
+      const stored = localStorage.getItem("chat");
+      if (stored) chat.innerHTML = stored;
+    }
 
-  function saveMessages() {
-    localStorage.setItem("chat", chat.innerHTML);
-  }
+    function saveMessages() {
+      localStorage.setItem("chat", chat.innerHTML);
+    }
 
-  function send() {
-    const msg = input.value.trim();
-    if (!msg) return;
-    const div = document.createElement("div");
-    div.className = "msg user";
-    div.textContent = "You: " + msg;
-    chat.appendChild(div);
-    input.value = "";
-    autoReply(msg);
-    saveMessages();
-    scrollDown();
-  }
+    function scrollDown() {
+      chat.scrollTop = chat.scrollHeight;
+    }
 
-  function autoReply(msg) {
-    setTimeout(() => {
-      const reply = document.createElement("div");
-      reply.className = "msg bot";
-      reply.textContent = "Bot: I saw you said '" + msg + "'";
-      chat.appendChild(reply);
+    function send() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      const userMsg = document.createElement("div");
+      userMsg.className = "msg user";
+      userMsg.textContent = "You: " + text;
+      chat.appendChild(userMsg);
+
+      input.value = "";
       saveMessages();
       scrollDown();
-    }, 1000);
-  }
 
-  function clearChat() {
-    chat.innerHTML = "";
-    saveMessages();
-  }
+      setTimeout(() => {
+        const botMsg = document.createElement("div");
+        botMsg.className = "msg bot";
+        botMsg.textContent = "Bot: I saw your message — '" + text + "'";
+        chat.appendChild(botMsg);
+        saveMessages();
+        scrollDown();
+      }, 1000);
+    }
 
-  function scrollDown() {
-    chat.scrollTop = chat.scrollHeight;
-  }
+    function clearChat() {
+      chat.innerHTML = "";
+      saveMessages();
+    }
 
-  // Auto-update UI every 2 seconds
-  setInterval(() => {
+    // Live refresh every 2 seconds
+    setInterval(() => {
+      loadMessages();
+      scrollDown();
+    }, 2000);
+
+    // Load on start
     loadMessages();
     scrollDown();
-  }, 2000);
-
-  // Load on start
-  loadMessages();
-</script>
+  </script>
 
 </body>
 </html>
