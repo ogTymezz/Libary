@@ -1,122 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Custom Messenger</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
-      padding: 20px;
-      margin: 0;
-    }
-    h2 {
-      text-align: center;
-    }
-    #chat {
-      background: #fff;
-      border: 1px solid #ccc;
-      padding: 10px;
-      height: 300px;
-      overflow-y: auto;
-      margin-bottom: 10px;
-    }
-    .msg {
-      margin: 5px 0;
-      padding: 5px 8px;
-      border-radius: 5px;
-    }
-    .user {
-      background: #d1ffd1;
-      color: #003300;
-    }
-    .bot {
-      background: #d0e7ff;
-      color: #002244;
-    }
-    #controls {
-      display: flex;
-      gap: 10px;
-    }
-    #input {
-      flex-grow: 1;
-      padding: 5px;
-      font-size: 16px;
-    }
-    button {
-      padding: 5px 10px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            background-color: #FF6347;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1::after {
+            content: '✨';
+            margin-left: 10px;
+            font-size: 24px;
+        }
+    </style>
 </head>
 <body>
-
-  <h2>📩 Custom Messenger</h2>
-
-  <div id="chat"></div>
-
-  <div id="controls">
-    <input id="input" type="text" placeholder="Type your message here..." />
-    <button onclick="send()">Send</button>
-    <button onclick="clearChat()">Clear</button>
-  </div>
-
-  <script>
-    const chat = document.getElementById("chat");
-    const input = document.getElementById("input");
-
-    function loadMessages() {
-      const stored = localStorage.getItem("chat");
-      if (stored) chat.innerHTML = stored;
-    }
-
-    function saveMessages() {
-      localStorage.setItem("chat", chat.innerHTML);
-    }
-
-    function scrollDown() {
-      chat.scrollTop = chat.scrollHeight;
-    }
-
-    function send() {
-      const text = input.value.trim();
-      if (!text) return;
-
-      const userMsg = document.createElement("div");
-      userMsg.className = "msg user";
-      userMsg.textContent = "You: " + text;
-      chat.appendChild(userMsg);
-
-      input.value = "";
-      saveMessages();
-      scrollDown();
-
-      setTimeout(() => {
-        const botMsg = document.createElement("div");
-        botMsg.className = "msg bot";
-        botMsg.textContent = "Bot: I saw your message — '" + text + "'";
-        chat.appendChild(botMsg);
-        saveMessages();
-        scrollDown();
-      }, 1000);
-    }
-
-    function clearChat() {
-      chat.innerHTML = "";
-      saveMessages();
-    }
-
-    // Live refresh every 2 seconds
-    setInterval(() => {
-      loadMessages();
-      scrollDown();
-    }, 2000);
-
-    // Load on start
-    loadMessages();
-    scrollDown();
-  </script>
-
+    <h1>Library (by ExoticTymezz)</h1>
 </body>
 </html>
